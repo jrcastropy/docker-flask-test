@@ -1,8 +1,16 @@
 version: "3.8"
 
 services:
+  api:
+    build: ./api
+    command: uvicorn main:app --reload --port 3001 --host 0.0.0.0
+    # remove hastag sign if you want to open the api outside docker
+    # ports:
+    # - 3001:3001
   front-end:
     build: ./frontend
     command: gunicorn -w 1 -b 0.0.0.0:8000 application:application
     ports:
       - 8000:8000
+    depends_on:
+      - api
